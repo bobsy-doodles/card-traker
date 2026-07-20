@@ -1444,10 +1444,6 @@
         // DRAG AND DROP
         // ========================
         const uploadArea = document.getElementById('uploadArea');
-        uploadArea.addEventListener('click', () => {
-            document.getElementById('receiptInput').click();
-        });
-
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             uploadArea.classList.add('dragover');
