@@ -1185,6 +1185,35 @@
             document.getElementById('activeCards').textContent = activeCards;
             document.getElementById('totalSpent').textContent = '$' + totalSpent.toFixed(2);
         }
+        // ========================
+        // DRAG AND DROP
+        // ========================
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const event = { target: { files: [file] } };
+                handleReceiptUpload(event);
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('editModal').addEventListener('click', (e) => {
+            if (e.target.id === 'editModal') {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
