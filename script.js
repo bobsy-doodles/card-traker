@@ -256,7 +256,26 @@ function showAuth() {
   if (authMode !== 'reset') setAuthMode('signin');
 }
 
+// Add this BEFORE the onAuthStateChange listener (around line 259)
+let initialLoadComplete = false;
+
+async function checkInitialAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  initialLoadComplete = true;
+  if (session) {
+    showApp(session);
+  } else {
+    showAuth();
+  }
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', checkInitialAuth);
+
+// Update the listener to respect initial load
 sb.auth.onAuthStateChange((event, session) => {
+  if (!initialLoadComplete) return; // Don't override initial load check
+  
   if (event === 'PASSWORD_RECOVERY') {
     document.getElementById('appView').hidden = true;
     document.getElementById('authView').hidden = false;
